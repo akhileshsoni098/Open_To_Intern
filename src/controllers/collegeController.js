@@ -31,6 +31,8 @@ const isValidfname = function (fullName) {
   let urlreg = /^https?:\/\/(.+\/)+.+(\.(gif|png|jpg|jpeg|webp|svg|psd|bmp|tif))$/i
 
  
+// ==================================post Api =================================================================
+
   exports.createCollege = async function(req,res){
 
  try{
@@ -53,10 +55,6 @@ if(!name){
         return res.status(400).send({status:false , msg: "logoLink is mandatory" })
 
        }
-
-
-
-
        if(!isValid(name)){
         return res.status(400).send({status:false , msg: "please input valid name"})
        }
@@ -89,7 +87,7 @@ if(!isValidfname(fullName))
         res.status(500).send({ status: false, msg: err.message });
     }
 }
-
+// =================================================================================================================== 
 /*
 
 Returns the college details for the requested college (Expect a query parameter by the name collegeName. This is anabbreviated college name. For example iith)
@@ -105,7 +103,7 @@ Each member of each team should have their tests in running state
 
 
 
-
+// ========================================== get Api==========================================
 
 
 exports.getCollegeData =async function(req,res){
@@ -117,7 +115,7 @@ exports.getCollegeData =async function(req,res){
     return res.status(400).send({status:false , msg: "provide college name in query"})
    }
    let getCollegeName= await  collegeModel.findOne({name:collegeName}).select({name:1,fullName:1,logoLink:1})
-   
+
    console.log(getCollegeName);
 
 if(!getCollegeName){
@@ -125,14 +123,11 @@ if(!getCollegeName){
 }
    let getInternsData = await interModel.find({collegeId:getCollegeName._id}).select({name:1,email:1,mobile:1})
    
+
    let obj ={}
-
    obj.name=getCollegeName.name
-
    obj.fullName = getCollegeName.fullName
-
    obj.logoLink = getCollegeName.logoLink
-
    obj.interns = getInternsData
 
   return  res.status(200).send({status : true , data : obj})
@@ -142,39 +137,3 @@ if(!getCollegeName){
 
  }
 }
-
-
-
-
-
-
-// exports.getCollegeData =async function(req,res){
-
-//  try {
-
-//    let collegeName=req.query.collegeName
-
-//    let getCollegeName= await  collegeModel.findOne({name:collegeName}).select({name:1,fullName:1,logoLink:1})
-// // id aa gyi 
-//    console.log(getCollegeName);
-
-//    let getInternsData = await interModel.find({collegeId:getCollegeName._id}).select({name:1,email:1,mobile:1})
-   
-//    let obj ={}
-//    obj.name=getCollegeName.name
-//    obj.fullName = getCollegeName.fullName
-//    obj.logoLink = getCollegeName.logoLink
-
-//    obj.interns = getInternsData
-
-//   return  res.status(200).send({status : true , data : obj})
-// }
-//   catch (error) {
-//    return res.status(500).send({status : false, msg : error.message})
-//  }
-
-
-// }
-
-
-// module.exports.createCollege = {createCollege}

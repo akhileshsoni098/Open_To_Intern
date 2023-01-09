@@ -6,12 +6,13 @@ Return HTTP status 201 on a succesful document creation. Also return the documen
 Return HTTP status 400 for an invalid request with a response body like this
 
 
-
 Intern Model
 { name: {mandatory}, email: {mandatory, valid email, unique}, mobile: {mandatory, valid mobile number, unique},
  collegeId: {ObjectId, ref to college model, isDeleted: {boolean, default: false}}
 
 */
+
+
 
 const { isValidObjectId } = require("mongoose");
 
@@ -114,19 +115,3 @@ data.collegeName ==clgId._id
 }
 }
 
-
-
-/*
-
-## GET /functionup/collegeDetails
-Returns the college details for the requested college (Expect a query parameter by the name collegeName. This is anabbreviated college name. For example iith)
-Returns the list of all interns who have applied for internship at this college.
-The response structure should look like this
-Testing
-To test these apis create a new collection in Postman named Project 2 Internship
-Each api should have a new request in this collection
-Each request in the collection should be rightly named. Eg Create college, Get college details etc
-Each member of each team should have their tests in running state
-
-
-*/
