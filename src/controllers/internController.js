@@ -29,6 +29,11 @@ function validateEmail(id) {
     return regex.test(id);
   }
 
+  function validateMobile(id) {
+    let regex = /^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$/ ;
+    return regex.test(id)
+  }
+
 exports.createInterns = async function(req,res){
 const data = req.body
 const {name , email , mobile, collegeId} = data
@@ -46,6 +51,12 @@ try {
     if(!mobile){ 
         return res.status(400).send({status: false , msg: "provide your mobile"})
     }
+
+    const uniqueMobile = await internModel.findOne({email: data.mobile})
+    if (uniqueMobile) {
+        return res.status(400).send({status:true , msg:"This mobile no is already exist"})
+
+    }
     // if(!collegeId){ 
     //     return res.status(400).send({status: false , msg: "provide your collegeId"})
     // }
@@ -55,12 +66,14 @@ try {
     
     // regex daalna h
     if(!validateEmail(email)) {
-        return res.status(400).send({status : false, msg : "please provide correct details"})
+        return res.status(400).send({status : false, msg : "please provide correct Email"})
     }
 
     if(!validateName(name)) {
         return res.status(400).send({status : false, msg : "please provide correct name " })
     }
+
+    
     
     
     const uniqueEmail = await internModel.findOne({email: data.email})
@@ -69,9 +82,10 @@ try {
         return res.status(400).send({status: false , msg: "email is already exist"})
     }
     
-    const uniqueMobile = await internModel.findOne({email: data.mobile})
-    if (uniqueMobile) {
-        return res.status(400).send({status:true , msg:"This mobile no is already exist"})
+    
+
+    if(!validateMobile(mobile)) {
+        return res.status(400).send({status : false, msg : "Please use correct Mobile Number"})
     }
     // const getCollegeId = await collegeModel.fineOne({name : data.collegeName}) 
     // data.collegeId = getCollegeId["_id"]
