@@ -1,4 +1,4 @@
-const mongooge = require('mongoose')
+const mongoose = require('mongoose')
 
 /*
 
@@ -8,10 +8,10 @@ Intern Model
 collegeId: {ObjectId, ref to college model, isDeleted: {boolean, default: false}}
 */
 
-const objectId = mongoose.Schema.Types.ObjectId
+const ObjectId = mongoose.Schema.Types.ObjectId
 
 
-const collegeSchema = new mongoose.Schema({
+const internSchema = new mongoose.Schema({
 
 name: {
     type:String,
@@ -30,8 +30,8 @@ mobile:{
     unique:true
 },
 collegeId:{
-type:objectId,
-ref:"College_Model"
+type:ObjectId,
+ref:"college"
 },
 
 isDeleted:{
@@ -44,4 +44,4 @@ default:false
     timestamp:true
 })
 
-module.exports = mongooge.model('Intern_Model' ,collegeSchema )
+module.exports = mongoose.model('intern' ,internSchema )

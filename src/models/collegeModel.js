@@ -36,4 +36,4 @@ isDeleted:{
 }
 })
 
-module.exports = mongoose.model('College_Model' , collegeSchema)
+module.exports = mongoose.model('college' , collegeSchema)

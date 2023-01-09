@@ -6,11 +6,11 @@ Return HTTP status 201 on a succesful document creation. Also return the documen
 Return HTTP status 400 for an invalid request with a response body like this
 
 */
+const internModel = require("../models/internModel")
 
-const createIerns = async function(req,res){
+exports.createInterns = async function(req,res){
 const data = req.body
-
-
-
+const saveInterns = await internModel.create(data)
+res.status(201).send({status:true,data:saveInterns})
 
 }

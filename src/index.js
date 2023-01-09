@@ -13,5 +13,5 @@ mongoose.connect('mongodb+srv://Amityadav:Amit160419@cluster0.glxnckl.mongodb.ne
 app.use('/',routes)
 
 app.listen(3000,function(){
-    console.log("Server is running")
+    console.log("Server is running on 3000")
 })
