@@ -1,17 +1,28 @@
-let express = require('express')
-let mongoose = require('mongoose')
-let app = express()
-let routes = require('./routes/route')
-app.use(express.json()) //altervative to bodyparser
-mongoose.set('strictQuery', true)
 
-mongoose.connect('mongodb+srv://Amityadav:Amit160419@cluster0.glxnckl.mongodb.net/group18Database')
+const express = require('express') 
 
-.then(console.log("MongoDb is connected"))
-.catch((e) => console.log(e))
+const route = require('./routes/route')
 
-app.use('/',routes)
+const mongoose = require('mongoose')
 
-app.listen(3000,function(){
-    console.log("Server is running on 3000")
+const app = express();
+
+mongoose.set('strictQuery', false);
+
+app.use(express.json())
+
+
+
+mongoose.connect("mongodb+srv://Amityadav:Amit160419@cluster0.glxnckl.mongodb.net/group18Database",{useNewUrlParser:true})
+
+.then(()=> console.log("DB is Connected"))
+
+.catch(err => console.log(err))
+
+app.use('/',route);
+
+app.listen( 3000,function () {
+
+    console.log("Express app running on port"+  3000)
+    
 })

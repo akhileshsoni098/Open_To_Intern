@@ -8,145 +8,100 @@ edge cases handle krna h ....
 */
   // <===============================GLOBAL REGEX====================>
 
-  function validateName(name) {
-   let regex =  /^[a-z]*$/;
-   return regex.test(name);
- }
- function validatefullame(fullName) {
 
-    let regex = /^[a-zA-Z,'.\s]{0,150}$/
+const isValid = function(value){
+    if(typeof value == "undefined"|| value=="null") return false
 
-    return regex.test(fullName);
-  }
+    if(typeof value == "string" && value.trim().length ==0) return false
 
-  //let urlr = /^https?:\/\/(.+\/)+.+(\.(gif|png|jpg|jpeg|webp|svg|psd|bmp|tif))$/i
-
-exports.createCollege = async function(req,res){
-
-    const data = req.body
-
-    if(Object.keys(data).length==0)
-
-     return res.status(400).send({status: false,message:"pls provide input"})
-
-    let {name, fullName, logoLink} = data
-if(!name){
-     return res.status(400).send({status:false , msg: "name is mandatory" })
-    }
-    if(!validateName(name)) {return res.status(400).send({status : false, msg : "please provide correct details"})}
-if(!validatefullame){
-}
-const uniqueName = await collegeModel.findOne({name:data.name})
-         if(uniqueName){
-    res.status(400).send({status: false , msg: " name is already exist"})
-}
-    if(!fullName){
-        return res.status(400).send({status:false , msg: "fullName is mandatory" })
-       }
-if(!validatefullame(fullName)){
-    return res.status(400).send({status:false , msg:"please enter valid full name"})
-}
-       if(!logoLink){
-        return res.status(400).send({status:false , msg: "logoLink is mandatory" })
-       }
-       if(!urlreg.test(logoLink)){
-        return res.status(400).send({status:false , msg: " please enter valid logoLink"})
-       }
-
-    const saveCollege = await collegeModel.create(data)
-    res.status(201).send({status:true , msg:saveCollege})
-
+    return true
 }
 
-
-
-exports.getCollegeData =async function(req,res){
- try {
-   let collegeName=req.query.collegeName
-
-   let getCollegeName= await  collegeModel.findOne({name:collegeName}).select({name:1,fullName:1,logoLink:1})
-   console.log(getCollegeName);
-   let getInternsData = await interModel.find({collegeId:getCollegeName._id}).select({name:1,email:1,mobile:1})
-   
-   let obj ={}
-   obj.name=getCollegeName.name
-   obj.fullName = getCollegeName.fullName
-   obj.logoLink = getCollegeName.logoLink
-
-   obj.interns = getInternsData
-
-  return  res.status(200).send({status : true , data : obj})
-}
-  catch (error) {
-   return res.status(500).send({status : false, msg : error.message})
- }
-
+const isValidName = function (name) {
+    return /^[a-z]*$/
+    .test(name)
 
 }
+const isValidfname = function (fullName) {
+    return /^[a-zA-Z,'.\s]{0,150}$/
+    .test(fullName)
 
-/**const collegeModel = require("../models/collegeModel")
-const interModel = require("../models/internModel")
-/*
-edge cases handle krna h ....
-{ name: { mandatory, unique, example iith}, fullName: {mandatory, example `Indian Institute of Technology, Hyderabad`},
- logoLink: {mandatory}, isDeleted: {boolean, default: false} }
-
-*/
-  // <===============================GLOBAL REGEX====================>
-
-  function validateName(name) {
-   let regex =  /^[a-z]*$/;
-   return regex.test(name);
- }
-
-
- 
- function validatefullame(fullName) {
-
-    let regex = /^[a-zA-Z,'.\s]{0,150}$/
-
-    return regex.test(fullName);
-  }
+}
 
   let urlreg = /^https?:\/\/(.+\/)+.+(\.(gif|png|jpg|jpeg|webp|svg|psd|bmp|tif))$/i
 
-exports.createCollege = async function(req,res){
+ 
+  exports.createCollege = async function(req,res){
 
+ try{
     const data = req.body
 
     if(Object.keys(data).length==0)
 
-     return res.status(400).send({status: false,message:"pls provide input"})
-
+        return res.status(400).send({status: false,message:"pls provide input"})
+    
     let {name, fullName, logoLink} = data
+
 if(!name){
      return res.status(400).send({status:false , msg: "name is mandatory" })
     }
-    if(!validateName(name)) {return res.status(400).send({status : false, msg : "please provide correct details"})}
-if(!validatefullame){
-}
-const uniqueName = await collegeModel.findOne({name:data.name})
-         if(uniqueName){
-    res.status(400).send({status: false , msg: " name is already exist"})
-}
     if(!fullName){
         return res.status(400).send({status:false , msg: "fullName is mandatory" })
        }
-if(!validatefullame(fullName)){
-    return res.status(400).send({status:false , msg:"please enter valid full name"})
-}
        if(!logoLink){
-        return res.status(400).send({status:false , msg: "logoLink is mandatory" })
-       }
-       if(!urlreg.test(logoLink)){
-        return res.status(400).send({status:false , msg: " please enter valid logoLink"})
-       }
        
+        return res.status(400).send({status:false , msg: "logoLink is mandatory" })
+
+       }
+
+
+
+
+       if(!isValid(name)){
+        return res.status(400).send({status:false , msg: "please input valid name"})
+       }
+       if(!isValidName(name)){
+        return res.status(400).send({status : false, msg : "please provide correct name"})
+       }
+
+const uniqueName = await collegeModel.findOne({name:data.name})
+         if(uniqueName){
+    res.status(400).send({status: false , msg: " name is already exist"})
+         }
+
+   if(!isValid(fullName)){
+return res.status(400).send({status : false, msg : "please provide correct full name"})
+   }
+
+if(!isValidfname(fullName))
+    return res.status(400).send({status:false , msg:"please enter valid full name"})
+
+    
+ if(!urlreg.test(logoLink)){
+  return res.status(400).send({status:false , msg: " please enter valid logoLink"})
+ }
+
+
     const saveCollege = await collegeModel.create(data)
     res.status(201).send({status:true , msg:saveCollege})
-
+    
+    } catch(err) {
+        res.status(500).send({ status: false, msg: err.message });
+    }
 }
 
+/*
+
+Returns the college details for the requested college (Expect a query parameter by the name collegeName. This is anabbreviated college name. For example iith)
+Returns the list of all interns who have applied for internship at this college.
+The response structure should look like this
+Testing
+To test these apis create a new collection in Postman named Project 2 Internship
+Each api should have a new request in this collection
+Each request in the collection should be rightly named. Eg Create college, Get college details etc
+Each member of each team should have their tests in running state
+
+*/
 
 
 
@@ -154,20 +109,28 @@ if(!validatefullame(fullName)){
 
 
 exports.getCollegeData =async function(req,res){
-
  try {
 
-   let collegeName=req.query.collegeName
+   let collegeName =req.query.collegeName
 
+   if(!collegeName || collegeName.collegeName== "" ){
+    return res.status(400).send({status:false , msg: "provide college name in query"})
+   }
    let getCollegeName= await  collegeModel.findOne({name:collegeName}).select({name:1,fullName:1,logoLink:1})
-// id aa gyi 
+   
    console.log(getCollegeName);
 
+if(!getCollegeName){
+    return res.status(404).send({status: false , msg: "no data found"})
+}
    let getInternsData = await interModel.find({collegeId:getCollegeName._id}).select({name:1,email:1,mobile:1})
    
    let obj ={}
+
    obj.name=getCollegeName.name
+
    obj.fullName = getCollegeName.fullName
+
    obj.logoLink = getCollegeName.logoLink
 
    obj.interns = getInternsData
@@ -176,9 +139,42 @@ exports.getCollegeData =async function(req,res){
 }
   catch (error) {
    return res.status(500).send({status : false, msg : error.message})
+
  }
-
-
 }
 
-/** */
+
+
+
+
+
+// exports.getCollegeData =async function(req,res){
+
+//  try {
+
+//    let collegeName=req.query.collegeName
+
+//    let getCollegeName= await  collegeModel.findOne({name:collegeName}).select({name:1,fullName:1,logoLink:1})
+// // id aa gyi 
+//    console.log(getCollegeName);
+
+//    let getInternsData = await interModel.find({collegeId:getCollegeName._id}).select({name:1,email:1,mobile:1})
+   
+//    let obj ={}
+//    obj.name=getCollegeName.name
+//    obj.fullName = getCollegeName.fullName
+//    obj.logoLink = getCollegeName.logoLink
+
+//    obj.interns = getInternsData
+
+//   return  res.status(200).send({status : true , data : obj})
+// }
+//   catch (error) {
+//    return res.status(500).send({status : false, msg : error.message})
+//  }
+
+
+// }
+
+
+// module.exports.createCollege = {createCollege}

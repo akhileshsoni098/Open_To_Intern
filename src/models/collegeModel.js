@@ -34,6 +34,6 @@ isDeleted:{
     type:Boolean,
     default:false
 }
-})
+}, {timestaps:true})
 
 module.exports = mongoose.model('college' , collegeSchema)
