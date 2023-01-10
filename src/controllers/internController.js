@@ -79,7 +79,7 @@ const {name , email , mobile, collegeName } = data
         return res.status(400).send({status : false, msg : "please provide correct name " })
     }
 
-    const getcollegeId = await collegeModel.findOne({name:data.collegeName})
+    const getcollegeId = await collegeModel.findOne({name:data.collegeName}).select({_id:1})
     console.log(getcollegeId)
 
 if(!getcollegeId){
@@ -89,10 +89,12 @@ if(!getcollegeId){
 if(getcollegeId){
 
 data.collegeId = getcollegeId["_id"]
-
 }
      const saveInterns = await internModel.create(data)
-    res.status(201).send({status:true,data:saveInterns})
+
+     const result = await internModel.findById(saveInterns._id).select({ _id: 0, createdAt: 0, updatedAt:0,__v: 0});
+
+    res.status(201).send({status:true,data:result})
 }
     
  catch (error) {
