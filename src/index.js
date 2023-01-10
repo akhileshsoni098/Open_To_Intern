@@ -12,7 +12,6 @@ mongoose.set('strictQuery', false);
 app.use(express.json())
 
 
-
 mongoose.connect("mongodb+srv://Amityadav:Amit160419@cluster0.glxnckl.mongodb.net/group18Database",{useNewUrlParser:true})
 
 .then(()=> console.log("DB is Connected"))
