@@ -14,7 +14,7 @@ Intern Model
 
 
 
-const { isValidObjectId } = require("mongoose");
+// const { isValidObjectId } = require("mongoose"); 
 
 const collegeModel = require("../models/collegeModel");
 
@@ -54,7 +54,7 @@ if(Object.keys(data).length ==0){
 return res.status(400)>send({status: false , msg: "please provide Input"})
 
 }
-const {name , email , mobile, collegeName} = data
+const {name , email , mobile, collegeName } = data
 
 
 
@@ -76,7 +76,7 @@ const {name , email , mobile, collegeName} = data
     if(uniqueEmail){
         return res.status(400).send({status: false , msg: "email is already exist"})
     }
-
+ 
 
     const uniqueMobile = await internModel.findOne({mobile: data.mobile})
     if (uniqueMobile) {
@@ -96,15 +96,17 @@ const {name , email , mobile, collegeName} = data
         return res.status(400).send({status : false, msg : "please provide correct name " })
     }
 
-    const clgId = await collegeModel.findOne({name:data.collegeName}).select({_id:1})
-    console.log(clgId)
+    const getcollegeId = await collegeModel.findOne({name:data.collegeName})
+    console.log(getcollegeId)
 
-if(!clgId){
+if(!getcollegeId){
     return res.status(400).send({status:fasle ,msg: "clg name is not exist"})
 }
 
-if(clgId){
-data.collegeName ==clgId._id
+if(getcollegeId){
+
+data.collegeId = getcollegeId["_id"]
+
 }
      const saveInterns = await internModel.create(data)
     res.status(201).send({status:true,data:saveInterns})
@@ -115,3 +117,4 @@ data.collegeName ==clgId._id
 }
 }
 
+ 

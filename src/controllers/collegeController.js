@@ -1,5 +1,7 @@
 const collegeModel = require("../models/collegeModel")
 const interModel = require("../models/internModel")
+
+
 /*
 edge cases handle krna h ....
 { name: { mandatory, unique, example iith}, fullName: {mandatory, example `Indian Institute of Technology, Hyderabad`},
@@ -67,9 +69,9 @@ const uniqueName = await collegeModel.findOne({name:data.name})
     res.status(400).send({status: false , msg: " name is already exist"})
          }
 
-   if(!isValid(fullName)){
-return res.status(400).send({status : false, msg : "please provide correct full name"})
-   }
+//    if(!isValid(fullName)){
+// return res.status(400).send({status : false, msg : "please provide correct full name"})
+//    }
 
 if(!isValidfname(fullName))
     return res.status(400).send({status:false , msg:"please enter valid full name"})
@@ -87,17 +89,16 @@ if(!isValidfname(fullName))
         res.status(500).send({ status: false, msg: err.message });
     }
 }
-// =================================================================================================================== 
-/*
 
-Returns the college details for the requested college (Expect a query parameter by the name collegeName. This is anabbreviated college name. For example iith)
-Returns the list of all interns who have applied for internship at this college.
-The response structure should look like this
-Testing
-To test these apis create a new collection in Postman named Project 2 Internship
-Each api should have a new request in this collection
-Each request in the collection should be rightly named. Eg Create college, Get college details etc
-Each member of each team should have their tests in running state
+/*
+// Returns the college details for the requested college (Expect a query parameter by the name collegeName. This is anabbreviated college name. For example iith)
+// Returns the list of all interns who have applied for internship at this college.
+// The response structure should look like this
+// Testing
+// To test these apis create a new collection in Postman named Project 2 Internship
+// Each api should have a new request in this collection
+// Each request in the collection should be rightly named. Eg Create college, Get college details etc
+// Each member of each team should have their tests in running state
 
 */
 

@@ -39,7 +39,7 @@ default:false
 }
 }, 
 {
-    timestamp:true
+    timestamps:true
 })
 
 module.exports = mongoose.model('intern' ,internSchema )
