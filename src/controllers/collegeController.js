@@ -116,7 +116,6 @@ if(!getCollegeName){
 }
    let getInternsData = await interModel.find({collegeId:getCollegeName._id}).select({name:1,email:1,mobile:1})
    
-
    let obj ={}
    obj.name=getCollegeName.name
    obj.fullName = getCollegeName.fullName
