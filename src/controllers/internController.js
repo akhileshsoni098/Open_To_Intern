@@ -1,20 +1,7 @@
-/*
-POST /functionup/interns
-Create a document for an intern.
-Also save the collegeId along with the document. Your request body contains the following fields - { name, mobile, email, collegeName}
-Return HTTP status 201 on a succesful document creation. Also return the document. The response should be a JSON object like this
-Return HTTP status 400 for an invalid request with a response body like this
-
-
-Intern Model
-{ name: {mandatory}, email: {mandatory, valid email, unique}, mobile: {mandatory, valid mobile number, unique},
- collegeId: {ObjectId, ref to college model, isDeleted: {boolean, default: false}}
-
-*/
-
 
 
 // const { isValidObjectId } = require("mongoose"); 
+
 
 const collegeModel = require("../models/collegeModel");
 
@@ -54,9 +41,8 @@ if(Object.keys(data).length ==0){
 return res.status(400)>send({status: false , msg: "please provide Input"})
 
 }
+
 const {name , email , mobile, collegeName } = data
-
-
 
     if(!name || data.name ==""){ 
         return res.status(400).send({status: false , msg: "provide your name"})
@@ -76,13 +62,10 @@ const {name , email , mobile, collegeName } = data
     if(uniqueEmail){
         return res.status(400).send({status: false , msg: "email is already exist"})
     }
- 
-
     const uniqueMobile = await internModel.findOne({mobile: data.mobile})
     if (uniqueMobile) {
         return res.status(400).send({status:true , msg:"This mobile no is already exist"})
     } 
-   
 
     if(!validateEmail(email)) {
         return res.status(400).send({status : false, msg : "please provide correct Email"})
@@ -102,7 +85,7 @@ const {name , email , mobile, collegeName } = data
 if(!getcollegeId){
     return res.status(400).send({status:fasle ,msg: "clg name is not exist"})
 }
-
+ 
 if(getcollegeId){
 
 data.collegeId = getcollegeId["_id"]
