@@ -89,7 +89,7 @@ exports.getCollegeData =async function(req,res){
    }
    let getCollegeName= await  collegeModel.findOne({name:collegeName}).select({name:1,fullName:1,logoLink:1})
 
-   console.log(getCollegeName);
+  //  console.log(getCollegeName);
 
 if(!getCollegeName){
     return res.status(404).send({status: false , msg: "no data found"})
