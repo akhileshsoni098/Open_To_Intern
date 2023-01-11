@@ -36,13 +36,11 @@ const isValidfname = function (fullName) {
 
  try{
     const data = req.body
-
     if(Object.keys(data).length==0)
-
+    {
         return res.status(400).send({status: false,message:"pls provide input"})
-    
+    }
     let {name, fullName, logoLink} = data
-
 if(!name){
      return res.status(400).send({status:false , msg: "name is mandatory" })
     }
@@ -50,11 +48,7 @@ if(!name){
         return res.status(400).send({status:false , msg: "fullName is mandatory" })
        }
        if(!logoLink){
-       
-
-
         return res.status(400).send({status:false , msg: "logoLink is mandatory" })
-
        }
        if(!isValid(name)){
         return res.status(400).send({status:false , msg: "please input valid name"})
@@ -62,37 +56,23 @@ if(!name){
        if(!isValidName(name)){
         return res.status(400).send({status : false, msg : "please provide correct name"})
        }
-
-const uniqueName = await collegeModel.findOne({name:data.name})
+         const uniqueName = await collegeModel.findOne({name:data.name})
          if(uniqueName){
-    res.status(400).send({status: false , msg: " name is already exist"})
+   return res.status(400).send({status: false , msg: " name is already exist"})
          }
-
-if(!fullName || data.fullName ==""){
-  return res.status(400).send({status:false , msg:" provide full Name"})
-}
-
-   if(!isValid(fullName)){
-
-return res.status(400).send({status : false, msg : "please provide correct full name"})
-   }
-
-if(!isValidfname(fullName))
+    if(!isValidfname(fullName))
     return res.status(400).send({status:false , msg:"please enter valid full name"})
 
-    
- if(!urlreg.test(logoLink)){
+    if(!urlreg.test(logoLink)){
   return res.status(400).send({status:false , msg: " please enter valid logoLink"})
  }
-
-
     const saveCollege = await collegeModel.create(data)
     res.status(201).send({status:true , msg:saveCollege})
-    
-    } catch(err) {
+}
+     catch(err) {
         res.status(500).send({ status: false, msg: err.message });
     }
-}
+  }
 
 
 
@@ -102,9 +82,9 @@ if(!isValidfname(fullName))
 exports.getCollegeData =async function(req,res){
  try {
 
-   let collegeName =req.query.name
+   let collegeName =req.query.collegeName
 
-   if(!collegeName || collegeName.name== "" ){
+   if(!collegeName || collegeName.collegeName== "" ){
     return res.status(400).send({status:false , msg: "provide college name in query"})
    }
    let getCollegeName= await  collegeModel.findOne({name:collegeName}).select({name:1,fullName:1,logoLink:1})
@@ -115,18 +95,14 @@ if(!getCollegeName){
     return res.status(404).send({status: false , msg: "no data found"})
 }
    let getInternsData = await interModel.find({collegeId:getCollegeName._id}).select({name:1,email:1,mobile:1})
-   
-
    let obj ={}
    obj.name=getCollegeName.name
    obj.fullName = getCollegeName.fullName
    obj.logoLink = getCollegeName.logoLink
    obj.interns = getInternsData
-
   return  res.status(200).send({status : true , data : obj})
 }
   catch (error) {
    return res.status(500).send({status : false, msg : error.message})
-
  }
 }

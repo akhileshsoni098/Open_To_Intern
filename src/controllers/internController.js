@@ -10,24 +10,24 @@ const internModel = require("../models/internModel")
 // <==========================GLOBAL REGEX =====================>
 
 
-function validateEmail(id) {
+function validateEmail(email) {
     let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    return regex.test(id);
+    return regex.test(email);
   }
 
-  function validateName(id) {
+  function validateName(name) {
 
     let regex = /^[a-zA-Z ]{2,30}$/;
 
-    return regex.test(id);
+    return regex.test(name);
 
   }
 
-  function validateMobile(id) {
+  function validateMobile(mobile) {
 
     let regex = /^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$/ ;
 
-    return regex.test(id)
+    return regex.test(mobile)
 
   }
 
@@ -47,13 +47,12 @@ const {name , email , mobile, collegeName } = data
     if(!name || data.name ==""){ 
         return res.status(400).send({status: false , msg: "provide your name"})
     }
-    if(!email){ 
+    if(!email || data.email==""){ 
         return res.status(400).send({status: false , msg: "provide your email"})
     }
-    if(!mobile){ 
+    if(!mobile || data.mobile==""){ 
         return res.status(400).send({status: false , msg: "provide your mobile"})
     }
-
     if(!collegeName || data.collegeName ==""){ 
         return res.status(400).send({status: false , msg: "provide your collegeName"})
     }
@@ -62,6 +61,7 @@ const {name , email , mobile, collegeName } = data
     if(uniqueEmail){
         return res.status(400).send({status: false , msg: "email is already exist"})
     }
+
     const uniqueMobile = await internModel.findOne({mobile: data.mobile})
     if (uniqueMobile) {
         return res.status(400).send({status:true , msg:"This mobile no is already exist"})
@@ -81,11 +81,11 @@ const {name , email , mobile, collegeName } = data
 
     const getcollegeId = await collegeModel.findOne({name:data.collegeName}).select({_id:1})
     console.log(getcollegeId)
-
 if(!getcollegeId){
     return res.status(400).send({status:fasle ,msg: "clg name is not exist"})
 }
  
+
 if(getcollegeId){
 
 data.collegeId = getcollegeId["_id"]
