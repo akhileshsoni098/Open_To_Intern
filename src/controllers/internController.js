@@ -85,7 +85,6 @@ if(!getcollegeId){
     return res.status(400).send({status:fasle ,msg: "clg name is not exist"})
 }
  
-
 if(getcollegeId){
 
 data.collegeId = getcollegeId["_id"]

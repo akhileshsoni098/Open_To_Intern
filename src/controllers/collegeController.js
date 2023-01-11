@@ -36,11 +36,14 @@ const isValidfname = function (fullName) {
 
  try{
     const data = req.body
+
     if(Object.keys(data).length==0)
     {
         return res.status(400).send({status: false,message:"pls provide input"})
     }
+
     let {name, fullName, logoLink} = data
+    
 if(!name){
      return res.status(400).send({status:false , msg: "name is mandatory" })
     }
