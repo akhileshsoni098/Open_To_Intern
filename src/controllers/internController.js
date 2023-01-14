@@ -32,57 +32,58 @@ function validateEmail(email) {
   }
 
 exports.createInterns = async function(req,res){
+    res.header('Access-Control-Allow-Origin','*')
 try {
 
 const data = req.body
 
 if(Object.keys(data).length ==0){
 
-return res.status(400).send({status: false , msg: "please provide Input"})
+return res.status(400).send({status: false , data: "please provide Input"})
 
 }
 
 const {name , email , mobile, collegeName } = data
 
     if(!name || data.name ==""){ 
-        return res.status(400).send({status: false , msg: "provide your name"})
+        return res.status(400).send({status: false , data: "provide your name"})
     }
     if(!email || data.email==""){ 
-        return res.status(400).send({status: false , msg: "provide your email"})
+        return res.status(400).send({status: false , data: "provide your email"})
     }
     if(!mobile || data.mobile==""){ 
-        return res.status(400).send({status: false , msg: "provide your mobile"})
+        return res.status(400).send({status: false , data: "provide your mobile"})
     }
     if(!collegeName || data.collegeName ==""){ 
-        return res.status(400).send({status: false , msg: "provide your collegeName"})
+        return res.status(400).send({status: false , data: "provide your collegeName"})
     }
 
     const uniqueEmail = await internModel.findOne({email: data.email})
     if(uniqueEmail){
-        return res.status(400).send({status: false , msg: "email is already exist"})
+        return res.status(400).send({status: false , data: "email is already exist"})
     }
 
     const uniqueMobile = await internModel.findOne({mobile: data.mobile})
     if (uniqueMobile) {
-        return res.status(400).send({status:true , msg:"This mobile no is already exist"})
+        return res.status(400).send({status:true , data:"This mobile no is already exist"})
     } 
 
     if(!validateEmail(email)) {
-        return res.status(400).send({status : false, msg : "please provide correct Email"})
+        return res.status(400).send({status : false, data : "please provide correct Email"})
     }
 
     if(!validateMobile(mobile)) {
-        return res.status(400).send({status : false, msg : "Please use correct Mobile Number"})
+        return res.status(400).send({status : false, data : "Please use correct Mobile Number"})
     }
 
     if(!validateName(name)) {
-        return res.status(400).send({status : false, msg : "please provide correct name " })
+        return res.status(400).send({status : false, data : "please provide correct name " })
     }
 
     const getcollegeId = await collegeModel.findOne({name:data.collegeName}).select({_id:1})
     console.log(getcollegeId)
 if(!getcollegeId){
-    return res.status(400).send({status:fasle ,msg: "clg name is not exist"})
+    return res.status(400).send({status:fasle ,data: "clg name is not exist"})
 }
  
 
@@ -98,7 +99,7 @@ data.collegeId = getcollegeId["_id"]
 }
     
  catch (error) {
-    return res.status(500).send({status : false , msg : error.message})
+    return res.status(500).send({status : false , data : error.message})
 }
 }
 

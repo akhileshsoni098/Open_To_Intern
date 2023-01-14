@@ -15,7 +15,7 @@ router.get('/functionup/collegeDetails', collegeController.getCollegeData)
 
 
 router.all('/*',function (res ,res){
-    res.status(400).send({status :false ,msg:"Please send correct url "});
+    res.status(400).send({status :false ,data:"Please send correct url "});
 })
 
 module.exports = router
